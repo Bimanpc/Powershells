@@ -1,1 +1,3 @@
-﻿$Svcs = Get-Service | Where-Object {$_.Status -EQ "Running"} | Out-GridView -Title "List of running services of your computer!!" -PassThru | Select -ExpandProperty Name
+﻿Get-Service |
+  Where-Object CanPauseAndContinue -eq $true |
+    Select-Object -Property *
