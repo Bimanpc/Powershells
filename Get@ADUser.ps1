@@ -1,0 +1,4 @@
+﻿Get-ADUser -Filter <string> [-ResultPageSize <int>] [-ResultSetSize <System.Nullable[System.Int32]>] [-SearchBase <string>] [-SearchScope {Base | OneLevel | Subtree}] [-SearchScope {Base | OneLevel | Subtree}] [-AuthType {Negotiate | Basic}] [-Credential <PSCredential>] [-Partition <string>] [-Properties <string[]>] [-Server <string>] [<CommonParameters>]
+Get-ADUser [-Identity] <ADUser> [-AuthType {Negotiate | Basic}] [-Credential <PSCredential>] [-Partition <string>] [-Properties <string[]>] [-Server <string>] [<CommonParameters>]
+Get-ADUser -LDAPFilter <string> [-ResultPageSize <int>] [-ResultSetSize <System.Nullable[System.Int32]>] [-SearchBase <string>] [-SearchScope {Base | OneLevel | Subtree}] [-AuthType {Negotiate | Basic}] [-Credential <PSCredential>] [-Partition <string>] [-Properties <string[]>] [-Server <string>] [<CommonParameters>]
+
