@@ -1,0 +1,1 @@
+﻿Get-CimInstance -Class Win32_PingStatus -Filter "Address='127.0.0.1'"
