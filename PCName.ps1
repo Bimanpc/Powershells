@@ -1,1 +1,2 @@
-﻿Get-CimInstance -Class Win32_NetworkAdapter -PCName .
+﻿get-childitem env:computername
+
