@@ -1,0 +1,10 @@
+﻿Write-Host "Mapping drive using powershell"
+New-PSDrive -Name "test" -PSProvider "FileSystem" -Root "\\appserver\Public"
+Write-Host "Drive creats"
+Write-Host "create a temp drive"
+New-PSDrive -Name "Geek" -PSProvider Environment -Root "C:\Users\vignesh\Documents" -Description "Test"
+Write-Host "Temporary drive created"
+Write-Host "Drive for a registry key"
+New-PSDrive -Name "Geek" -PSProvider "Registry" -Root "HKLM:\Software\test"
+Write-Host "Registry drive created"
+Demo of mapping drive using powershell
