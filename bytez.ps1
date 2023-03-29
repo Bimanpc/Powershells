@@ -1,0 +1,1 @@
+﻿get-childitem | measure-object -Property length

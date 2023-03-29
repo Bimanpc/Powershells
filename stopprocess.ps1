@@ -1,0 +1,1 @@
+﻿get-process | where { $_.WS -gt 10MB } | stop-process

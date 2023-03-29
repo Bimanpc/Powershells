@@ -1,0 +1,1 @@
+﻿get-service | where-object {$_.status -eq "running"}
