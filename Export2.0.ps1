@@ -1,0 +1,1 @@
+﻿Get-Service | Export-CSV c:\service20.csv
