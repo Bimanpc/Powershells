@@ -1,0 +1,1 @@
+﻿Get-Command -Name *location* -Module Microsoft.PowerShell.Management
