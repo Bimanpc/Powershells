@@ -1,0 +1,1 @@
+﻿$Svcs = Get-Service | Where-Object {$_.Status -EQ "Running"}| Out-GridView -Title "List of the  running services" -PassThru| Select -ExpandProperty Name
