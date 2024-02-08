@@ -1,0 +1,65 @@
+# Define the XAML code for the GUI
+[xml]$xaml = @'
+<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="CPU Info" Height="200" Width="400">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16" FontWeight="Bold">CPU Information</TextBlock>
+
+        <Label Grid.Row="1" Content="Processor Name:"/>
+        <TextBlock x:Name="ProcessorName" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+
+        <Label Grid.Row="2" Content="Architecture:"/>
+        <TextBlock x:Name="Architecture" Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+
+        <Label Grid.Row="3" Content="Cores:"/>
+        <TextBlock x:Name="NumberOfCores" Grid.Row="3" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+
+        <Label Grid.Row="4" Content="Threads:"/>
+        <TextBlock x:Name="NumberOfThreads" Grid.Row="4" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+
+        <Button Grid.Row="5" Content="Get CPU Info" Width="100" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,10,0,0" Click="GetCPUInfo_Click"/>
+
+        <Button Grid.Row="6" Content="Export to TXT" Width="100" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,10,0,0" Click="ExportToTxt_Click"/>
+    </Grid>
+</Window>
+'@
+
+# Load XAML code
+[Windows.Markup.XamlLoader]::Load((New-Object Windows.Markup.XmlTextReader -ArgumentList ([System.IO.StringReader]::new($xaml.OuterXml))))
+
+# Define the event handler for the "Get CPU Info" button
+$window.FindName("GetCPUInfo_Click") = {
+    $processor = Get-WmiObject Win32_Processor
+    $window.FindName("ProcessorName").Text = $processor.Name
+    $window.FindName("Architecture").Text = $processor.Architecture
+    $window.FindName("NumberOfCores").Text = $processor.NumberOfCores
+    $window.FindName("NumberOfThreads").Text = $processor.NumberOfLogicalProcessors
+}
+
+# Define the event handler for the "Export to TXT" button
+$window.FindName("ExportToTxt_Click") = {
+    $info = @"
+Processor Name: $($window.FindName("ProcessorName").Text)
+Architecture: $($window.FindName("Architecture").Text)
+Cores: $($window.FindName("NumberOfCores").Text)
+Threads: $($window.FindName("NumberOfThreads").Text)
+"@
+    $info | Out-File -FilePath "CPU_Info.txt" -Encoding UTF8
+    Write-Host "CPU information exported to CPU_Info.txt"
+}
+
+# Display the GUI
+[Windows.Markup.XamlLoader]::Load((New-Object Windows.Markup.XmlTextReader -ArgumentList ([System.IO.StringReader]::new($xaml.OuterXml))))
+$window.ShowDialog() | Out-Null
