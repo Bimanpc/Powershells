@@ -1,0 +1,55 @@
+Add-Type -AssemblyName System.Windows.Forms
+Add-Type -AssemblyName System.Drawing
+
+# Define the form
+$form = New-Object System.Windows.Forms.Form
+$form.Text = "Phone Book 2.0"
+$form.Size = New-Object System.Drawing.Size(400,400)
+$form.StartPosition = "CenterScreen"
+$form.FormBorderStyle = "FixedDialog"
+
+# Define the controls
+$listBox = New-Object System.Windows.Forms.ListBox
+$listBox.Location = New-Object System.Drawing.Point(10,10)
+$listBox.Size = New-Object System.Drawing.Size(300,300)
+$form.Controls.Add($listBox)
+
+$addButton = New-Object System.Windows.Forms.Button
+$addButton.Location = New-Object System.Drawing.Point(320,10)
+$addButton.Size = New-Object System.Drawing.Size(60,23)
+$addButton.Text = "Add"
+$form.Controls.Add($addButton)
+
+$removeButton = New-Object System.Windows.Forms.Button
+$removeButton.Location = New-Object System.Drawing.Point(320,40)
+$removeButton.Size = New-Object System.Drawing.Size(60,23)
+$removeButton.Text = "Remove"
+$form.Controls.Add($removeButton)
+
+# Define event handlers
+$addButton.Add_Click({
+    $result = [System.Windows.Forms.MessageBox]::Show("Add new contact?", "Confirmation", [System.Windows.Forms.MessageBoxButtons]::YesNo)
+    if ($result -eq [System.Windows.Forms.DialogResult]::Yes) {
+        $name = [System.Windows.Forms.MessageBox]::Show("Enter name:", "Name", [System.Windows.Forms.MessageBoxButtons]::OKCancel)
+        $number = [System.Windows.Forms.MessageBox]::Show("Enter phone number:", "Phone Number", [System.Windows.Forms.MessageBoxButtons]::OKCancel)
+        $listBox.Items.Add("$name - $number")
+    }
+})
+
+$removeButton.Add_Click({
+    if ($listBox.SelectedItem) {
+        $result = [System.Windows.Forms.MessageBox]::Show("Are you sure you want to delete this contact?", "Confirmation", [System.Windows.Forms.MessageBoxButtons]::YesNo)
+        if ($result -eq [System.Windows.Forms.DialogResult]::Yes) {
+            $listBox.Items.Remove($listBox.SelectedItem)
+        }
+    }
+    else {
+        [System.Windows.Forms.MessageBox]::Show("Please select a contact to remove.", "Error", [System.Windows.Forms.MessageBoxButtons]::OK)
+    }
+})
+
+# Load initial data
+# You can load your initial phone book data here if you have any
+
+# Display the form
+$form.ShowDialog() | Out-Null
