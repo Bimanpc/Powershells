@@ -1,0 +1,1 @@
+Send-MailMessage -To "recipient@example.com" -From "sender@example.com" -SmtpServer "smtp.example.com" -Subject "Clown Alert 🤡" -Body "Beware of the funky clown!"
