@@ -1,0 +1,26 @@
+# Get a list of all wireless interfaces
+$interfaces = Get-NetAdapter -InterfaceDescription 'Wi-Fi*'
+
+# Check if there are any Wi-Fi interfaces found
+if ($interfaces.Count -eq 0) {
+    Write-Host "No Wi-Fi interfaces found."
+    exit
+}
+
+# Iterate through each interface and get the signal strength
+foreach ($interface in $interfaces) {
+    # Get the interface name
+    $interfaceName = $interface.Name
+
+    # Get the wireless network information
+    $wifiInfo = netsh wlan show interfaces | Select-String -Pattern "^\s*Signal\s*:\s*\d+"
+
+    # Extract the signal strength percentage
+    if ($wifiInfo) {
+        $signalStrength = [int]($wifiInfo -split ': ')[1].Trim().TrimEnd('%')
+        Write-Host "Wi-Fi Interface: $interfaceName"
+        Write-Host "Signal Strength: $signalStrength%"
+    } else {
+        Write-Host "No signal strength information available for interface: $interfaceName"
+    }
+}
