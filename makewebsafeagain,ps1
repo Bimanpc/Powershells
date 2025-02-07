@@ -1,0 +1,40 @@
+# Requires -Version 5.1
+Add-Type -AssemblyName System.Windows.Forms
+
+# Create a new form
+$form = New-Object System.Windows.Forms.Form
+$form.Text = "Parental Control App"
+$form.Size = New-Object System.Drawing.Size(300, 200)
+
+# Create a label
+$label = New-Object System.Windows.Forms.Label
+$label.Text = "Enter Application to Block:"
+$label.AutoSize = $true
+$label.Location = New-Object System.Drawing.Point(10, 20)
+$form.Controls.Add($label)
+
+# Create a text box
+$textBox = New-Object System.Windows.Forms.TextBox
+$textBox.Location = New-Object System.Drawing.Point(150, 20)
+$form.Controls.Add($textBox)
+
+# Create a button
+$button = New-Object System.Windows.Forms.Button
+$button.Text = "Block"
+$button.Location = New-Object System.Drawing.Point(150, 60)
+$form.Controls.Add($button)
+
+# Action on button click
+$button.Add_Click({
+    $appName = $textBox.Text
+    if ($appName) {
+        # Adding a rule to block the application (example: use Windows Firewall)
+        New-NetFirewallRule -DisplayName "Block $appName" -Direction Outbound -Program "C:\Path\To\$appName.exe" -Action Block
+        [System.Windows.Forms.MessageBox]::Show("Blocked $appName")
+    } else {
+        [System.Windows.Forms.MessageBox]::Show("Please enter an application name.")
+    }
+})
+
+# Run the form
+$form.ShowDialog()
