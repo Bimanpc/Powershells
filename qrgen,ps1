@@ -1,0 +1,47 @@
+# Load required assemblies
+Add-Type -AssemblyName System.Windows.Forms
+Add-Type -AssemblyName System.Drawing
+
+# Load QRCoder library
+Add-Type -Path "path\to\QRCoder.dll"
+
+# Create the form
+$form = New-Object System.Windows.Forms.Form
+$form.Text = "QR Code Generator"
+$form.Size = New-Object System.Drawing.Size(400, 300)
+$form.StartPosition = "CenterScreen"
+
+# Create a label
+$label = New-Object System.Windows.Forms.Label
+$label.Text = "Enter text to generate QR Code:"
+$label.Location = New-Object System.Drawing.Point(10, 20)
+$form.Controls.Add($label)
+
+# Create a textbox
+$textBox = New-Object System.Windows.Forms.TextBox
+$textBox.Location = New-Object System.Drawing.Point(10, 50)
+$textBox.Size = New-Object System.Drawing.Size(360, 20)
+$form.Controls.Add($textBox)
+
+# Create a button
+$button = New-Object System.Windows.Forms.Button
+$button.Text = "Generate QR Code"
+$button.Location = New-Object System.Drawing.Point(10, 80)
+$button.Add_Click({
+    # Generate QR Code
+    $qrGenerator = New-Object QRCoder.QRCodeGenerator
+    $qrCodeData = $qrGenerator.CreateQrCode($textBox.Text, [QRCoder.QRCodeGenerator+ECCLevel]::Q)
+    $qrCode = New-Object QRCoder.PngByteQRCode($qrCodeData)
+    $qrCodeBytes = $qrCode.GetGraphic(20)
+
+    # Save QR Code to file
+    $filePath = "qrcode.png"
+    [System.IO.File]::WriteAllBytes($filePath, $qrCodeBytes)
+
+    # Show message
+    [System.Windows.Forms.MessageBox]::Show("QR Code generated and saved as $filePath", "Success")
+})
+$form.Controls.Add($button)
+
+# Show the form
+$form.ShowDialog()
