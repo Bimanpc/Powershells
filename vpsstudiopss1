@@ -1,0 +1,76 @@
+Add-Type -AssemblyName System.Windows.Forms
+Add-Type -AssemblyName System.Drawing
+
+# Δημιουργία του κύριου παραθύρου
+$form = New-Object System.Windows.Forms.Form
+$form.Text = "Digital Audio Workshop"
+$form.Size = New-Object System.Drawing.Size(800, 600)
+$form.StartPosition = "CenterScreen"
+$form.BackColor = [System.Drawing.Color]::FromArgb(30, 30, 30)
+
+# Label τίτλου
+$titleLabel = New-Object System.Windows.Forms.Label
+$titleLabel.Text = "🎧 Digital Audio Workstation"
+$titleLabel.ForeColor = 'White'
+$titleLabel.Font = New-Object System.Drawing.Font("Segoe UI", 18, [System.Drawing.FontStyle]::Bold)
+$titleLabel.AutoSize = $true
+$titleLabel.Location = New-Object System.Drawing.Point(20,20)
+$form.Controls.Add($titleLabel)
+
+# Κουμπί για "Load Audio"
+$loadButton = New-Object System.Windows.Forms.Button
+$loadButton.Text = "Load Audio File"
+$loadButton.Size = New-Object System.Drawing.Size(200,40)
+$loadButton.Location = New-Object System.Drawing.Point(20,80)
+$loadButton.BackColor = 'DarkSlateGray'
+$loadButton.ForeColor = 'White'
+$form.Controls.Add($loadButton)
+
+# Κουμπί για "Play"
+$playButton = New-Object System.Windows.Forms.Button
+$playButton.Text = "▶ Play"
+$playButton.Size = New-Object System.Drawing.Size(100,40)
+$playButton.Location = New-Object System.Drawing.Point(240,80)
+$playButton.BackColor = 'Green'
+$playButton.ForeColor = 'White'
+$form.Controls.Add($playButton)
+
+# Κουμπί για "Pause"
+$pauseButton = New-Object System.Windows.Forms.Button
+$pauseButton.Text = "⏸ Pause"
+$pauseButton.Size = New-Object System.Drawing.Size(100,40)
+$pauseButton.Location = New-Object System.Drawing.Point(360,80)
+$pauseButton.BackColor = 'Goldenrod'
+$pauseButton.ForeColor = 'White'
+$form.Controls.Add($pauseButton)
+
+# Κουμπί για "Stop"
+$stopButton = New-Object System.Windows.Forms.Button
+$stopButton.Text = "⏹ Stop"
+$stopButton.Size = New-Object System.Drawing.Size(100,40)
+$stopButton.Location = New-Object System.Drawing.Point(480,80)
+$stopButton.BackColor = 'Crimson'
+$stopButton.ForeColor = 'White'
+$form.Controls.Add($stopButton)
+
+# Πλαίσιο λίστας για loaded tracks
+$trackList = New-Object System.Windows.Forms.ListBox
+$trackList.Location = New-Object System.Drawing.Point(20,140)
+$trackList.Size = New-Object System.Drawing.Size(560, 300)
+$trackList.BackColor = 'Black'
+$trackList.ForeColor = 'Lime'
+$form.Controls.Add($trackList)
+
+# Event για "Load"
+$loadButton.Add_Click({
+    $openFile = New-Object System.Windows.Forms.OpenFileDialog
+    $openFile.Filter = "Audio Files (*.mp3;*.wav)|*.mp3;*.wav"
+    if ($openFile.ShowDialog() -eq "OK") {
+        $trackList.Items.Add($openFile.FileName)
+    }
+})
+
+# Μπορείς να επεκτείνεις τα buttons με Media Player COM object ή NAudio.NET
+
+# Εκκίνηση GUI
+[void]$form.ShowDialog()
