@@ -1,0 +1,63 @@
+Add-Type -AssemblyName System.Windows.Forms
+Add-Type -AssemblyName System.Drawing
+
+# Create Form
+$form = New-Object System.Windows.Forms.Form
+$form.Text = "AI MFA Authenticator"
+$form.Size = New-Object System.Drawing.Size(300,300)
+$form.StartPosition = "CenterScreen"
+
+# Username Label & TextBox
+$userLabel = New-Object System.Windows.Forms.Label
+$userLabel.Text = "Username:"
+$userLabel.Location = New-Object System.Drawing.Point(10,20)
+$userLabel.Size = New-Object System.Drawing.Size(280,20)
+$form.Controls.Add($userLabel)
+
+$userBox = New-Object System.Windows.Forms.TextBox
+$userBox.Location = New-Object System.Drawing.Point(10,40)
+$userBox.Size = New-Object System.Drawing.Size(260,20)
+$form.Controls.Add($userBox)
+
+# Password Label & TextBox
+$passLabel = New-Object System.Windows.Forms.Label
+$passLabel.Text = "Password:"
+$passLabel.Location = New-Object System.Drawing.Point(10,70)
+$passLabel.Size = New-Object System.Drawing.Size(280,20)
+$form.Controls.Add($passLabel)
+
+$passBox = New-Object System.Windows.Forms.TextBox
+$passBox.Location = New-Object System.Drawing.Point(10,90)
+$passBox.Size = New-Object System.Drawing.Size(260,20)
+$passBox.UseSystemPasswordChar = $true
+$form.Controls.Add($passBox)
+
+# MFA Label & TextBox
+$mfaLabel = New-Object System.Windows.Forms.Label
+$mfaLabel.Text = "MFA Code:"
+$mfaLabel.Location = New-Object System.Drawing.Point(10,120)
+$mfaLabel.Size = New-Object System.Drawing.Size(280,20)
+$form.Controls.Add($mfaLabel)
+
+$mfaBox = New-Object System.Windows.Forms.TextBox
+$mfaBox.Location = New-Object System.Drawing.Point(10,140)
+$mfaBox.Size = New-Object System.Drawing.Size(260,20)
+$form.Controls.Add($mfaBox)
+
+# Submit Button
+$submitButton = New-Object System.Windows.Forms.Button
+$submitButton.Text = "Authenticate"
+$submitButton.Location = New-Object System.Drawing.Point(10,180)
+$submitButton.Size = New-Object System.Drawing.Size(260,30)
+$submitButton.Add_Click({
+    # Simulated Auth Logic (you can plug in real logic or API calls here)
+    if ($userBox.Text -and $passBox.Text -and $mfaBox.Text) {
+        [System.Windows.Forms.MessageBox]::Show("Authentication Successful!","AI MFA Auth")
+    } else {
+        [System.Windows.Forms.MessageBox]::Show("Authentication Failed. Please fill all fields.","AI MFA Auth")
+    }
+})
+$form.Controls.Add($submitButton)
+
+# Run Form
+$form.ShowDialog()
